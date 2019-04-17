@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Information about episodes:</h1>
+<div mat-dialog-content>
+  <div *ngIf="!panelOpenState" class="lds-roller">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <mat-accordion *ngIf="panelOpenState">
+    <mat-expansion-panel *ngFor="let episode of data">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Episode number:
+        </mat-panel-title>
+        <mat-panel-description>
+          {{episode.id}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="item">
+        <div class="info">
+          <dl>
+            <dt>Name</dt>
+            <dd>{{episode.name}}</dd>
+          </dl>
+          <dl>
+            <dt>Url</dt>
+            <dd>{{episode.url}}</dd>
+          </dl>
+          <dl>
+            <dt>Air date</dt>
+            <dd>{{episode.air_date}}</dd>
+          </dl>
+          <dl>
+            <dt>Episode</dt>
+            <dd>{{episode.episode}}</dd>
+          </dl>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

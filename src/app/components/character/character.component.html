@@ -1,0 +1,40 @@
+<div class="items" *ngIf="characters">
+  <div class="item" *ngFor="let character of characters" (click)="clickHandler(character)">
+    <div class="image-holder">
+      <div class="text-holder">
+        <span class="name">{{character.name}}</span>
+        <dl>
+          <dt>Пол - </dt>
+          <dd>{{character.gender}}</dd>
+        </dl>
+        <dl>
+          <dt>ID - </dt>
+          <dd>{{character.id}}</dd>
+        </dl>
+      </div>
+      <img src={{character.image}} alt="" /> <br />
+    </div>
+    <div class="info">
+      <dl>
+        <dt>LOCATION</dt>
+        <dd>{{character.location.name}}</dd>
+      </dl>
+      <dl>
+        <dt>origin</dt>
+        <dd>{{character.origin.name}}</dd>
+      </dl>
+      <dl>
+        <dt>species</dt>
+        <dd>{{character.species}}</dd>
+      </dl>
+      <dl>
+        <dt>Статус</dt>
+        <dd>{{character.status}}</dd>
+      </dl>
+      <dl>
+        <dt>Способности</dt>
+        <dd>{{character.type ? character.type : 'Нету'}}</dd>
+      </dl>
+    </div>
+  </div>
+</div>

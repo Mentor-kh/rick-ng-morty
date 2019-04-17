@@ -1,0 +1,27 @@
+<form [formGroup]="filterForm">
+  <button *ngIf="filterForm.dirty" mat-stroked-button type="reset">Reset filters</button>
+  <div class="search">
+    <mat-form-field class="example-full-width">
+      <input matInput formControlName="search" type="text" placeholder="Search by name">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Search by gender</mat-label>
+      <select matNativeControl formControlName="gender">
+        <option value="">All</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="genderless">Genderless</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Search by status</mat-label>
+      <select matNativeControl formControlName="status">
+        <option value="">All</option>
+        <option value="alive">Alive</option>
+        <option value="dead ">Dead</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </mat-form-field>
+  </div>
+</form>

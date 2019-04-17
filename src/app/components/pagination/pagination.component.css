@@ -1,0 +1,58 @@
+.pagination ul, .pagination {
+  display: flex;
+  flex-direction: row;
+}
+.pagination * {
+  white-space: nowrap;
+}
+.pagination {
+  justify-content: center;
+}
+.hidden {
+  display: none;
+}
+.twocolumns {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-content: stretch;
+  align-items: flex-end;
+  padding-bottom: 1.25rem;
+}
+.twocolumns > * {
+  order: 0;
+  flex: 1 1 auto;
+  align-self: stretch;
+}
+
+.total .heading {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 32px;
+  font-weight: 600;
+  color: olivedrab;
+  text-align: center;
+}
+.total-grid {
+  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 4px double #000;
+  font-size: 18px;
+  color: rebeccapurple;
+  text-align: center;
+}
+.total-grid * {
+  display: inline-block;
+  vertical-align: top;
+  padding: 10px;
+}
+.total .current-page {
+  font-weight: 600;
+  color: green;
+}
+.total .total-pages {
+  font-weight: 600;
+  color: chocolate;
+}

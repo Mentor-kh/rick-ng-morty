@@ -1,0 +1,13 @@
+<div class="wrapper">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+  <div class="columns">
+    <app-filter (filterValues)="filterCharacters($event)"></app-filter>
+    <div *ngIf="pagesInfo">
+      <app-pagination (activePage)="setActivePage($event)" [pageNumber]="apiScope.pageNumber" [pagesInfo]="pagesInfo">
+      </app-pagination>
+    </div>
+  </div>
+  <app-character [characters]="characters"></app-character>
+</div>

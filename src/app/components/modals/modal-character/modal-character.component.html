@@ -1,0 +1,63 @@
+<h1 mat-dialog-title>Hi, {{data.character.name}}</h1>
+<div mat-dialog-content>
+  <p>Your info below:</p>
+  <div class="item">
+    <div class="image-holder">
+      <div class="text-holder">
+        <span class="name">{{data.character.name}}</span>
+        <dl>
+          <dt>Пол - </dt>
+          <dd>{{data.character.gender}}</dd>
+        </dl>
+        <dl>
+          <dt>ID - </dt>
+          <dd>{{data.character.id}}</dd>
+        </dl>
+      </div>
+      <img src={{data.character.image}} alt="" />
+    </div>
+    <div class="info">
+      <h3>Character info:</h3>
+      <dl>
+        <dt>name</dt>
+        <dd>{{data.character.name}}</dd>
+      </dl>
+      <dl>
+        <dt>species</dt>
+        <dd>{{data.character.species}}</dd>
+      </dl>
+      <dl>
+        <dt>status</dt>
+        <dd>{{data.character.status}}</dd>
+      </dl>
+      <dl>
+        <dt>Способности</dt>
+        <dd>{{data.character.type ? data.character.type : 'Нету'}}</dd>
+      </dl>
+    </div>
+    <div class="info" *ngIf="data.location">
+      <h3>Location info:</h3>
+      <dl>
+        <dt>Name</dt>
+        <dd>{{data.location.name}}</dd>
+      </dl>
+      <dl>
+        <dt>type</dt>
+        <dd>{{data.location.type}}</dd>
+      </dl>
+      <dl>
+        <dt>dimension</dt>
+        <dd>{{data.location.dimension}}</dd>
+      </dl>
+      <dl>
+        <dt>location url</dt>
+        <dd>{{data.location.url}}</dd>
+      </dl>
+    </div>
+  </div>
+</div>
+<p>Any additional actions needed?</p>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [(mat-dialog-close)]="data.character.episode" cdkFocusInitial>About Episodes</button>
+</div>
