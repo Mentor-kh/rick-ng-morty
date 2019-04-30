@@ -23,8 +23,8 @@ export class FilterComponent implements OnInit, OnDestroy {
     fakeInput:
       new FormControl('', null, this.checkUrlApi.validate.bind(this.checkUrlApi))
   });
+  public apiRequestErrors: ValidationErrors;
   private filterErrors: ValidationErrors;
-  private apiRequestErrors: ValidationErrors;
   private url: string;
   private $filterForm: Subscription;
   private $getApiRequestError: Subscription;
@@ -63,8 +63,6 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.$filterForm.unsubscribe();
     this.$getApiRequestError.unsubscribe();
   }
-
-
-  private getFilterError = (): string => this.filterErrors ? JSON.stringify(this.filterErrors) : null;
-  private getApiRequestErrors = (): string => this.apiRequestErrors ? JSON.stringify(this.apiRequestErrors) : '';
+  public getApiRequestErrors = (): string => this.apiRequestErrors ? JSON.stringify(this.apiRequestErrors) : '';
+  public getFilterError = (): string => this.filterErrors ? JSON.stringify(this.filterErrors) : null;
 }
