@@ -3,10 +3,10 @@ export interface IApiResults {
   results: ICharacter[];
 }
 export interface IPagesInfo {
-  count: number;
-  next: string;
-  pages: number;
-  prev: string;
+  count?: number;
+  next?: string;
+  pages?: number;
+  prev?: string;
 }
 export interface ICharacter {
   created: string;
@@ -59,5 +59,6 @@ export interface IFilterType {
 export interface IApiScope {
   filterValues: IFilterType;
   pageNumber: number;
-  currentUrl: string;
+  currentUrl?: string;
+  url: string;
 }

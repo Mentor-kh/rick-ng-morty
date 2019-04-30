@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IApiResults, IApiScope, ICharacter, IFilterType, IPagesInfo } from './interfaces/interfaces';
-import { from, Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { GetDataService } from './services/get-data.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +11,11 @@ import { from, Observable, Subject } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   public title: string = 'ricky-morty';
-  public sourceUrl: string = 'https://rickandmortyapi.com/api/character/';
-  public currentUrl: string = this.sourceUrl;
   public result: IApiResults;
   public characters: ICharacter[];
   public pagesInfo: IPagesInfo;
   public data: Observable<IApiResults>;
+  public $getDataService: Subscription;
   public $urlApiSource: Subject<string> = new Subject<string>();
   public apiScope: IApiScope = {
     filterValues: {
@@ -22,34 +23,28 @@ export class AppComponent implements OnInit, OnDestroy {
       status: '',
       gender: ''
     },
-    pageNumber: 1,
-    currentUrl: this.sourceUrl
+    url: '',
+    pageNumber: 1
   };
 
-  public constructor() {
+  public constructor(
+    private getDataService: GetDataService
+  ) {
     this.$urlApiSource.subscribe({
       next: (url: string) => {
-        this.data = from(fetch(url)
-          .then((response: Response) => response.json())
-          .catch((error: Error) => {
-            console.error('There has been a problem with your fetch operation: ' + error.message);
-          }));
-
-        this.data.subscribe(
-          (result: IApiResults) => {
-            this.result = result;
-            this.characters = this.result.results;
-            this.pagesInfo = this.result.info;
-          },
-          (error: Error) => console.error('ERROR: ', error));
+        this.$getDataService = this.getDataService.getData(url).subscribe((result: IApiResults) => {
+          this.result = result;
+          this.characters = this.result.results;
+          this.pagesInfo = this.result.info;
+        });
       },
-      error: (error: Error) => console.error('ERROR: ', error),
+      error: (error: Error) => console.error('urlApiSourceERROR: ', error),
       complete: () => console.log('complete'),
     });
   }
 
   public ngOnInit(): void {
-    this.$urlApiSource.next(this.sourceUrl);
+    this.$urlApiSource.next(environment.urlApi);
   }
 
   public setActivePage(pageNumber: number): void {
@@ -57,29 +52,24 @@ export class AppComponent implements OnInit, OnDestroy {
     this.createUrlrequest();
   }
 
-  public filterCharacters(filterValues: IFilterType): void {
-    this.apiScope.filterValues = filterValues;
-    if (this.pagesInfo && this.pagesInfo.pages < this.apiScope.pageNumber) {
-      this.apiScope.pageNumber = this.pagesInfo.pages;
+  public filterCharacters(url: string | null): void {
+    if (url !== null) {
+      this.apiScope.url = url;
+      this.createUrlrequest();
     } else {
+      this.characters = [];
+      this.pagesInfo.pages = 0;
       this.apiScope.pageNumber = 1;
     }
-    this.createUrlrequest();
   }
 
   public createUrlrequest(): void {
-    const nameString: string =
-      this.apiScope.filterValues.search ? `&name=${this.apiScope.filterValues.search}` : '';
-    const genderString: string =
-      this.apiScope.filterValues.gender ? `&gender=${this.apiScope.filterValues.gender}` : '';
-    const statusString: string =
-      this.apiScope.filterValues.status ? `&status=${this.apiScope.filterValues.status}` : '';
-    const url: string = `${this.sourceUrl}?page=${this.apiScope.pageNumber}${nameString}${genderString}${statusString}`;
-
+    const url: string = `page=${this.apiScope.pageNumber}${this.apiScope.url}`;
     this.$urlApiSource.next(url);
   }
 
   public ngOnDestroy(): void {
     this.$urlApiSource.unsubscribe();
+    this.$getDataService.unsubscribe();
   }
 }

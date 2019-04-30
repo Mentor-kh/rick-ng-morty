@@ -1,8 +1,9 @@
 <form [formGroup]="filterForm">
   <button *ngIf="filterForm.dirty" mat-stroked-button type="reset">Reset filters</button>
   <div class="search">
-    <mat-form-field class="example-full-width">
+    <mat-form-field>
       <input matInput formControlName="search" type="text" placeholder="Search by name">
+      <mat-error *ngIf="filterForm.controls.search.errors">{{ getFilterError() }}</mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Search by gender</mat-label>
@@ -24,4 +25,11 @@
       </select>
     </mat-form-field>
   </div>
+</form>
+<form [formGroup]="fakeForm">
+  <mat-form-field class="example-full-width hidden">
+    <input matInput formControlName="fakeInput" type="text">
+    <mat-error *ngIf="fakeForm.controls.fakeInput.errors">Error goes here! {{ getApiRequestErrors() }}</mat-error>
+  </mat-form-field>
+  <div *ngIf="apiRequestErrors">Error goes here! {{ getApiRequestErrors() }}</div>
 </form>

@@ -47,6 +47,9 @@ img {
   background: #000;
   color: white;
 }
+body .hidden {
+  display: none;
+}
 .items {
   display: grid;
   grid-gap: 10px;

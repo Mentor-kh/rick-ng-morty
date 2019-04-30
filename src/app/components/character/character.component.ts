@@ -3,7 +3,7 @@ import { ICharacter, IEpisodes, ILocation } from '../../interfaces/interfaces';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModalComponent } from '../modals/modal-character/modal-character.component';
 import { ModalEpisodesComponent } from '../modals/modal-episodes/modal-episodes.component';
-import { from, Observable, Subject } from 'rxjs';
+import { from, Observable, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-character',
@@ -19,19 +19,24 @@ export class CharacterComponent implements OnDestroy {
   public episodesDialogRef: MatDialogRef<ModalEpisodesComponent>;
   public urlApiLocation: Subject<string> = new Subject<string>();
   public urlApiEpisodes: Subject<string> = new Subject<string>();
+  public $urlApiLocation: Subscription;
+  public $urlApiEpisodes: Subscription;
+  public $characterDialogRef: Subscription;
+  public $dataLocation: Subscription;
+  public $dataEpisodes: Subscription;
   public listEpisodes: string;
 
   public constructor(
     public dialogCharacter: MatDialog,
     public dialogEpisodes: MatDialog
   ) {
-    this.urlApiLocation.subscribe({
+    this.$urlApiLocation = this.urlApiLocation.subscribe({
       next: (url: string) => {
         this.dataLocation = from(fetch(url)
           .then((response: Response) => response.json())
           .catch((error: Error) => console.error('LocationERROR: ', error)));
 
-        this.dataLocation.subscribe((response: ILocation) => {
+        this.$dataLocation = this.dataLocation.subscribe((response: ILocation) => {
           const location: ILocation = response;
           const character: ICharacter = this.character;
 
@@ -40,7 +45,7 @@ export class CharacterComponent implements OnDestroy {
             data: { character, location }
           });
 
-          this.characterDialogRef.afterClosed().subscribe((dialogResult: string[]): void => {
+          this.$characterDialogRef = this.characterDialogRef.afterClosed().subscribe((dialogResult: string[]): void => {
             if (dialogResult) {
               this.listEpisodes = dialogResult.reduce((episodes: string, current: string, index: number): string => {
                 const arr: string[] = current.split('/');
@@ -55,13 +60,13 @@ export class CharacterComponent implements OnDestroy {
           (error: Error) => console.error('dialogCloseERROR: ', error));
       }
     });
-    this.urlApiEpisodes.subscribe({
+    this.$urlApiEpisodes = this.urlApiEpisodes.subscribe({
       next: (url: string) => {
         this.dataEpisodes = from(fetch(url)
           .then((response: Response) => response.json())
           .catch((error: Error) => console.error('LocationERROR: ', error)));
 
-        this.dataEpisodes.subscribe((resultEpisodes: IEpisodes[]) => {
+        this.$dataEpisodes = this.dataEpisodes.subscribe((resultEpisodes: IEpisodes[]) => {
           this.episodesDialogRef = this.dialogEpisodes.open(ModalEpisodesComponent, {
             width: '450px',
             data: resultEpisodes.length ? resultEpisodes : [resultEpisodes]
@@ -78,7 +83,10 @@ export class CharacterComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.urlApiLocation.unsubscribe();
-    this.urlApiEpisodes.unsubscribe();
+    this.$urlApiLocation.unsubscribe();
+    this.$urlApiEpisodes.unsubscribe();
+    this.$characterDialogRef.unsubscribe();
+    this.$dataLocation.unsubscribe();
+    this.$dataEpisodes.unsubscribe();
   }
 }
