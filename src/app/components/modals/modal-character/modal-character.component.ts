@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { IDialogData } from 'src/app/interfaces/interfaces';
 
@@ -8,7 +8,6 @@ import { IDialogData } from 'src/app/interfaces/interfaces';
   styleUrls: ['./modal-character.component.css']
 })
 export class ModalComponent {
-  @Output() public dialogRefEmit: EventEmitter<IDialogData> = new EventEmitter<IDialogData>();
   public constructor(
     public dialogRef: MatDialogRef<ModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IDialogData) { }

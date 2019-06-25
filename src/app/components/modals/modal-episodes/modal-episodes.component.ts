@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { IDialogData } from 'src/app/interfaces/interfaces';
 import { Subscription } from 'rxjs';
@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./modal-episodes.component.css']
 })
 export class ModalEpisodesComponent implements OnInit, OnDestroy {
-  @Output() public dialogRefEmit: EventEmitter<IDialogData> = new EventEmitter<IDialogData>();
   public panelOpenState: boolean = false;
   private $dialogRef: Subscription;
   public constructor(
